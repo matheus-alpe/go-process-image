@@ -45,7 +45,7 @@ func Grayscale(img image.Image) image.Image {
 	grayImg := image.NewGray(bounds)
 
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
-		for x := bounds.Min.X; x < bounds.Min.X; x++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
 			pixel := img.At(x, y)
 			grayPixel := color.GrayModel.Convert(pixel)
 			grayImg.Set(x, y, grayPixel)
