@@ -2,6 +2,7 @@ package processimage
 
 import (
 	"image"
+	"image/color"
 	"image/jpeg"
 	"os"
 
@@ -23,8 +24,8 @@ func Read(path string) image.Image {
 	return img
 }
 
-func Resize(img image.Image) image.Image {
-	return imaging.Resize(img, 250, 250, imaging.Lanczos)
+func Resize(img image.Image, width, height int) image.Image {
+	return imaging.Resize(img, width, height, imaging.Lanczos)
 }
 
 func Write(path string, img image.Image) {
@@ -37,4 +38,19 @@ func Write(path string, img image.Image) {
 	if err = jpeg.Encode(output, img, nil); err != nil {
 		panic(err)
 	}
+}
+
+func Grayscale(img image.Image) image.Image {
+	bounds := img.Bounds()
+	grayImg := image.NewGray(bounds)
+
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Min.X; x++ {
+			pixel := img.At(x, y)
+			grayPixel := color.GrayModel.Convert(pixel)
+			grayImg.Set(x, y, grayPixel)
+		}
+	}
+
+	return grayImg
 }
